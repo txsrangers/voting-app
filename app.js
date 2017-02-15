@@ -12,8 +12,8 @@ var users = require('./routes/users');
 var app = express();
 
 // database setup
-+// set up for production OR development
-+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/voting');
+// set up for production OR development
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/voting');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

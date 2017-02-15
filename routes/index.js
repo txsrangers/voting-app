@@ -8,6 +8,9 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/signup', function(req, res, next) {
+	res.render('signup')	
+});
 //Create new account
 router.post('/signup', function(req, res, next) {
 	//get values from request body (comes from signup form)
@@ -45,6 +48,7 @@ router.post('/signup', function(req, res, next) {
 });
 
 module.exports = router;
+	
 
 /*
 
@@ -67,4 +71,3 @@ Home page route - GET
  DELETE POLL - DELETE
  
  */
-	
