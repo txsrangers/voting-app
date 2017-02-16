@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var mongoose = require('mongoose')
 
 /* GET home page. */
 var User = require('../models/user')
@@ -8,11 +9,40 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/signup', function(req, res, next) {
-	res.render('signup')	
+router.get('/signin', function(req, res, next) {
+  res.render('signin', { title: 'Sign In' });
 });
+
+router.get('/signup', function(req, res, next) {
+	res.render('signin', { title: 'Signup' });
+});
+
+router.get('/allpolls', function(req, res, next) {
+	res.render('allpolls', { title: 'List Of All Polls' });
+});
+
+router.get('/mypolls', function(req, res, next) {
+	res.render('mypolls', { title: 'My Polls' });
+});
+
+router.get('/individualpoll', function(req, res, next) {
+	res.render('individualpoll', { title: 'Poll' });
+});
+
+router.get('/createnewpoll', function(req, res, next) {
+	res.render('createnewpoll', { title: 'Create New Poll' });
+});
+
+router.get('/editpoll', function(req, res, next) {
+	res.render('editpoll', { title: 'Edit Poll' });
+});
+
+router.get('/deletepoll', function(req, res, next) {
+	res.render('deletepoll', { title: 'Delete Poll' });
+});
+
 //Create new account
-router.post('/signup', function(req, res, next) {
+router.post('/userlist', function(req, res, next) {
 	//get values from request body (comes from signup form)
 	var email = req.body.email;
 	var password = req.body.password;

@@ -10,3 +10,5 @@ var pollSchema = new Schema({
   tally: { type: Number }
 }, { timestamps: true });
 
+var ModelClass = mongoose.model('poll', pollSchema);
+module.exports = ModelClass;
