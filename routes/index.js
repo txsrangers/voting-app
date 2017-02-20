@@ -14,7 +14,7 @@ router.get('/signin', function(req, res, next) {
 });
 
 router.get('/signup', function(req, res, next) {
-	res.render('signin', { title: 'Signup' });
+	res.render('signup', { title: 'Signup' });
 });
 
 router.get('/allpolls', function(req, res, next) {
@@ -78,17 +78,17 @@ router.post('/userlist', function(req, res, next) {
 });
 
 module.exports = router;
-	
+
 
 /*
 
 Home page route - GET
- 
+
  SIGNUP - GET
  SIGNUP - POST
  SIGNIN - GET
  SIGNIN - POST
- 
+
  LIST OF ALL POLLS - GET
  LIST OF MY POLLS - GET
  INDIVIDUAL POLL - GET
@@ -99,5 +99,5 @@ Home page route - GET
  EDIT POLL - PUT/PATCH
  EDIT POLL (ADD NEW OPTION) - PUT/PATCH
  DELETE POLL - DELETE
- 
+
  */
