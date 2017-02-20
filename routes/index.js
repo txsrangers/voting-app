@@ -5,6 +5,22 @@ var mongoose = require('mongoose')
 /* GET home page. */
 var User = require('../models/user')
 
+/* GET Userlist page. */
+router.get('/userlist', function(req, res) {
+    var db = req.db;
+    var collection = db.get('voting');
+    collection.find({},{},function(e,docs){
+        res.render('userlist', {
+            "userlist" : docs
+        });
+    });
+});
+
+/* GET New User page. */
+router.get('/signup', function(req, res) {
+    res.render('signup', { title: 'Add New User' });
+});
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -13,8 +29,36 @@ router.get('/signin', function(req, res, next) {
   res.render('signin', { title: 'Sign In' });
 });
 
-router.get('/signup', function(req, res, next) {
-	res.render('signin', { title: 'Signup' });
+/* POST to Add User Service */
+router.post('/signup', function(req, res) {
+
+    // Set our internal DB variable
+    var db = req.db;
+
+    // Get our form values. These rely on the "name" attributes
+    var userName = req.body.username;
+    var userEmail = req.body.useremail;
+
+    // Set our collection
+    var collection = db.get('voting');
+    
+    // Submit to the DB
+    console.log("userName: " + userName);
+    console.log("userEmail: " + userEmail);
+    collection.insert({
+        "username" : userName,
+        "email" : userEmail
+    }, function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem adding the information to the database.");
+        }
+        else {
+            // And forward to success page
+            res.redirect("/userlist");
+        }
+    });
+    
 });
 
 router.get('/allpolls', function(req, res, next) {
@@ -41,6 +85,16 @@ router.get('/deletepoll', function(req, res, next) {
 	res.render('deletepoll', { title: 'Delete Poll' });
 });
 
+/* GET Userlist page. */
+router.get('/userlist', function(req, res) {
+    var db = req.db;
+    var collection = db.get('usercollection');
+    collection.find({},{},function(e,docs){
+        res.render('userlist', {
+            "userlist" : docs
+        });
+    });
+});
 //Create new account
 router.post('/userlist', function(req, res, next) {
 	//get values from request body (comes from signup form)
@@ -76,6 +130,7 @@ router.post('/userlist', function(req, res, next) {
 		});
 	});
 });
+
 
 module.exports = router;
 	

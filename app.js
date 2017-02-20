@@ -11,6 +11,10 @@ var mongoose = require('mongoose');
 var monk = require('monk')
 var db = monk(process.env.MONGODB_URI || 'mongodb://localhost/voting');
 
+db.then(() => {
+  console.log('Connected correctly to server')
+})
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -18,7 +22,7 @@ var app = express();
 
 // database setup
 // set up for production OR development
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/voting');
+//var db = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/voting');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
