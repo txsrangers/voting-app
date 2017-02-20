@@ -2,8 +2,7 @@ extends layout
 
 block content
   h1= title
-  form(method="POST", action="/user")
-    input(type="hidden", name="_method", value="PUT")
+  form(method="POST", action="/signin")
     p Email
       input(type="email", name="email")
     p Password
