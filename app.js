@@ -6,11 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-//use monk instead of mongoose:
-//var mongo = require('mongodb')
-var monk = require('monk')
-var db = monk(process.env.MONGODB_URI || 'mongodb://localhost/voting');
-
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -31,12 +26,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Make our monk db accessible to our router
-app.use(function(req,res,next){
-    req.db = db;
-    next();
-});
 
 app.use('/', index);
 app.use('/users', users);
