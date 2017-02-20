@@ -2,6 +2,13 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose')
 
+var Authentication = require('../controllers/authentication');
+var passportService = require('../services/passport');
+var passport = require('passport');
+
+var requireAuth = passport.authenticate('jwt', { session: false });
+var requireSignin = passport.authenticate('local', { session: false });
+
 /* GET home page. */
 var User = require('../models/user')
 
@@ -13,9 +20,13 @@ router.get('/signin', function(req, res, next) {
   res.render('signin', { title: 'Sign In' });
 });
 
+router.post('/signin', requireSignin, Authentication.signin);
+
 router.get('/signup', function(req, res, next) {
 	res.render('signup', { title: 'Signup' });
 });
+
+router.post('/signup', Authentication.signup);
 
 router.get('/allpolls', function(req, res, next) {
 	res.render('allpolls', { title: 'List Of All Polls' });
