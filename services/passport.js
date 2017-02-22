@@ -1,44 +1,43 @@
 const passport = require('passport');
 const User = require('../models/user');
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
 
-// Create local strategy
+// First, make a config object telling passport to use email/password combo
 const localOptions = { usernameField: 'email' };
+
+// create new instance of local strategy with our optoins
 const localLogin = new LocalStrategy(localOptions, function(email, password, done) {
+
+  // look up user by email in database
   User.findOne({ email: email }, function(err, user) {
+    // if internal error or no user found, return error
     if (err) { return done(err); }
     if (!user) { return done(null, false); }
 
+
+    // if we find a user, call mongoose instance method to check password
     user.comparePassword(password, function(err, isMatch) {
+      // if internal error or not a match, return an error
       if (err) { return done(err); }
       if (!isMatch) { return done(null, false); }
 
+      // otherwise, return the user object
       return done(null, user);
     });
   });
 });
 
-// Setup options for JWT Strategy
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-  secretOrKey: 'appSecret'
-};
+// Tell passport to serialize the user for sessions
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
 
-// Create JWT strategy
-const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
-  User.findById(payload.sub, function(err, user) {
-    if (err) { return done(err, false); }
-
-    if (user) {
-      done(null, user);
-    } else {
-      done(null, false);
-    }
+// and to deserialize the user as well!
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
   });
 });
 
-// Tell passport to use this strategy
-passport.use(jwtLogin);
+// tell passport to use our local strategy
 passport.use(localLogin);

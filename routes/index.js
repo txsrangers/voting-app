@@ -6,10 +6,6 @@ var Authentication = require('../controllers/authentication');
 var passportService = require('../services/passport');
 var passport = require('passport');
 
-var requireAuth = passport.authenticate('jwt', { session: false });
-var requireSignin = passport.authenticate('local', { session: false });
-
-/* GET home page. */
 var User = require('../models/user')
 
 router.get('/', function(req, res, next) {
@@ -20,7 +16,11 @@ router.get('/signin', function(req, res, next) {
   res.render('signin', { title: 'Sign In' });
 });
 
-router.post('/signin', requireSignin, Authentication.signin);
+router.post('/signin', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/signin',
+  failureFlash: true
+}));
 
 router.get('/signup', function(req, res, next) {
 	res.render('signup', { title: 'Signup' });
@@ -52,40 +52,9 @@ router.get('/deletepoll', function(req, res, next) {
 	res.render('deletepoll', { title: 'Delete Poll' });
 });
 
-//Create new account
-router.post('/userlist', function(req, res, next) {
-	//get values from request body (comes from signup form)
-	var email = req.body.email;
-	var password = req.body.password;
-
-	//canot proceed if no values
-	if(!email || !password) {
-		return res.status(422).send({error: 'You must provide email and password!'});
-	}
-
-	//check for existing user email in database
-	User.findOne({ email: email }, function (err, existingUser) {
-		//always handle possible errors
-		if(err) { return next(err); }
-		//if a record is found, display error
-		if(existingUser) {
-			return res.status(422).send({ error: 'Email is in use' })
-		}
-
-		//if no record found, define new user instance
-		var user = new User({
-			email: email,
-			password: password
-		});
-
-		//save to database
-		user.save(function(err) {
-			//handle error
-			if(err) { return next(err); }
-			//respond with user object
-			res.json({ success: true, user: user})
-		});
-	});
+router.get('/logout', function(req, res, next) {
+  req.logout();
+  res.redirect('/');
 });
 
 module.exports = router;
