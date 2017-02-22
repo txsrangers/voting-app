@@ -8,6 +8,22 @@ var passport = require('passport');
 
 var User = require('../models/user')
 
+/* GET Userlist page. */
+router.get('/userlist', function(req, res) {
+    var db = req.db;
+    var collection = db.get('voting');
+    collection.find({},{},function(e,docs){
+        res.render('userlist', {
+            "userlist" : docs
+        });
+    });
+});
+
+/* GET New User page. */
+router.get('/signup', function(req, res) {
+    res.render('signup', { title: 'Add New User' });
+});
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -56,6 +72,7 @@ router.get('/logout', function(req, res, next) {
   req.logout();
   res.redirect('/');
 });
+
 
 module.exports = router;
 
