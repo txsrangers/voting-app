@@ -1,8 +1,12 @@
 extends layout
 
 block content
-    h1= title
-    form#formAddUser(name="signup",method="post",action="/signup")
-        input#inputUserName(type="text", placeholder="username", name="username")
-        input#inputUserEmail(type="text", placeholder="useremail", name="useremail")
-        button#btnSubmit(type="submit") submit
+  h1= title
+  form(method="POST", action="/signup")
+    p Email
+      input(type="email", name="email")
+    p Password
+      input(type="password", name="password")
+    p
+      input(type="submit")
+
