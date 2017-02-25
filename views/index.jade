@@ -3,7 +3,11 @@ extends layout
 block content
   if !user
     h1= title
+    a(href='/signin') Sign In
+    br
+    br
+    a(href='/signup') Sign Up
   else
     h1 Hello there #{user.email}! 
     a(href='/logout') Logout
-  p Welcome to #{title}
+  

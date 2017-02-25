@@ -6,11 +6,12 @@ var bcrypt = require('bcrypt-nodejs');
 // Define our user model
 var userSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
-  password: String
+  password: String,
+  polls: String
 }, { timestamps: true });
 
 // We don't want to save unhashed password in the database!
-// Before each account creation, hash the password
+// Before each account creation, hash the password using a pre hook
 // http://mongoosejs.com/docs/middleware.html
 userSchema.pre('save', function(next) {
   const user = this;

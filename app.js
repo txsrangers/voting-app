@@ -3,14 +3,9 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var session = require('express-session');
-
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
-
-db.then(() => {
-  console.log('Connected correctly to server')
-})
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -19,7 +14,7 @@ var app = express();
 
 // database setup
 // set up for production OR development
-//var db = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/voting');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/voting');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -43,7 +38,6 @@ app.get('*', function(req, res, next) {
   res.locals.user = req.user || null;
   next();
 });
-
 
 app.use('/', index);
 app.use('/users', users);

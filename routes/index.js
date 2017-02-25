@@ -1,31 +1,22 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose')
-
 var Authentication = require('../controllers/authentication');
-var passportService = require('../services/passport');
+require('../services/passport');
 var passport = require('passport');
 
 var User = require('../models/user')
 
 /* GET Userlist page. */
-router.get('/userlist', function(req, res) {
-    var db = req.db;
-    var collection = db.get('voting');
-    collection.find({},{},function(e,docs){
-        res.render('userlist', {
-            "userlist" : docs
-        });
-    });
-});
-
-/* GET New User page. */
-router.get('/signup', function(req, res) {
-    res.render('signup', { title: 'Add New User' });
+router.get('/userlist', function(req, res, next) {
+  User.find({}, function(err, userlist) {
+    if (err) return next(err);
+    res.render('userlist', {userlist: userlist});
+  });
 });
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Voting App' });
 });
 
 router.get('/signin', function(req, res, next) {
@@ -69,6 +60,7 @@ router.get('/deletepoll', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res, next) {
+  req.session.destroy()
   req.logout();
   res.redirect('/');
 });

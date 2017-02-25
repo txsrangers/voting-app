@@ -12,8 +12,9 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
   User.findOne({ email: email }, function(err, user) {
     // if internal error or no user found, return error
     if (err) { return done(err); }
+    
     if (!user) { return done(null, false); }
-
+    
 
     // if we find a user, call mongoose instance method to check password
     user.comparePassword(password, function(err, isMatch) {
