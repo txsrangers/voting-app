@@ -5,7 +5,9 @@ var Authentication = require('../controllers/authentication');
 require('../services/passport');
 var passport = require('passport');
 
+//import the models
 var User = require('../models/user')
+var Polls = require('../models/poll')
 
 /* GET Userlist page. */
 router.get('/userlist', function(req, res, next) {
@@ -36,7 +38,10 @@ router.get('/signup', function(req, res, next) {
 router.post('/signup', Authentication.signup);
 
 router.get('/allpolls', function(req, res, next) {
-	res.render('allpolls', { title: 'List Of All Polls' });
+  Polls.find({}, function(err, polls) {
+    if (err) return next(err);
+    res.render('allpolls', {polls: polls});
+  });
 });
 
 router.get('/mypolls', function(req, res, next) {
@@ -50,6 +55,7 @@ router.get('/individualpoll', function(req, res, next) {
 router.get('/createnewpoll', function(req, res, next) {
 	res.render('createnewpoll', { title: 'Create New Poll' });
 });
+
 
 router.get('/editpoll', function(req, res, next) {
 	res.render('editpoll', { title: 'Edit Poll' });

@@ -1,4 +1,26 @@
 extends layout
 
 block content
-  h1= title
+    if !user
+      h1= title
+      a(href='/signin') Sign in to view all polls
+      br
+      br
+    else
+      h1 Polls
+      if !polls
+        p No polls to show.
+      else
+        table
+          tr
+            th User
+            th Poll
+            th Options
+          each poll, i in polls    
+            tr
+              td= poll.user_id
+              td= poll.poll_title
+              td= poll.poll_options  
+        br
+        br
+    a(href='/') Return to home

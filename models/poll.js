@@ -4,11 +4,12 @@ var Schema = mongoose.Schema;
 
 // Define our user model
 var pollSchema = new Schema( {
-  title: { type: String },
-  option: { type: String, unique: true },
-  owner: { type: String, unique: true },
-  tally: { type: Number }
+  user_id: String,
+  poll_title: String,
+  poll_options: Array
 }, { timestamps: true } );
+
+var poll = this;
 
 var ModelClass = mongoose.model('poll', pollSchema);
 module.exports = ModelClass;

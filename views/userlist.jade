@@ -1,11 +1,14 @@
 extends layout
 
 block content
-    h1.
-        User List
-    ul
+    h1 User List
+    table
+        tr
+            th User
+            th Email
         each user, i in userlist
-            li
-                a(href="mailto:#{user.email}")= user.username
-                br
-                a(href="mailto:#{user.email}")= user.email
+            tr
+                td= user.username
+                td= user.email
+    br
+    a(href='/') Return to home

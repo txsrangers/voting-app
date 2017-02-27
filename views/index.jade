@@ -3,11 +3,22 @@ extends layout
 block content
   if !user
     h1= title
-    a(href='/signin') Sign In
+    a(href='/signin') Sign in
     br
     br
     a(href='/signup') Sign Up
   else
-    h1 Hello there #{user.email}! 
+    h1 Hello there #{user.username}! 
+    hr
+    br
+    a(href='/createnewpoll') Create a new poll
+    br
+    br
+    a(href='/allpolls') View all polls
+    br
+    br
+    a(href='/userlist') User List
+    br
+    br
     a(href='/logout') Logout
   
