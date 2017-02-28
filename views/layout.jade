@@ -4,4 +4,12 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    h1 Voting App
+    hr
+    br
     block content
+    if user
+      .logout
+        a(href='logout') Logout
+      .home
+        a(href='/') Home

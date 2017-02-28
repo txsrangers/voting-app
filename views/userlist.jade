@@ -1,14 +1,17 @@
 extends layout
 
 block content
-    h1 User List
-    table
-        tr
-            th User
-            th Email
-        each user, i in userlist
+    if !user
+        p You must sign in first!
+        br
+        a(href='/signin') Sign In
+    else
+        h1 User List
+        table
             tr
-                td= user.username
-                td= user.email
-    br
-    a(href='/') Return to home
+                th User
+                th Email
+            each user, i in userlist
+                tr
+                    td= user.username
+                    td= user.email

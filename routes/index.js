@@ -45,7 +45,10 @@ router.get('/allpolls', function(req, res, next) {
 });
 
 router.get('/mypolls', function(req, res, next) {
-	res.render('mypolls', { title: 'My Polls' });
+	Polls.find({}, function(err, polls) {
+    if (err) return next(err);
+    res.render('mypolls', {polls: polls});
+  });
 });
 
 router.get('/individualpoll', function(req, res, next) {

@@ -13,9 +13,6 @@ table {
     width: 100%;
 }
 
-th {
-  underline: true
-}
 td, th {
     border: 1px solid #dddddd;
     text-align: left;
@@ -24,4 +21,24 @@ td, th {
 
 tr:nth-child(even) {
     background-color: #dddddd;
+}
+
+.logout {
+   position:absolute;
+   top:80px;
+   right:60px;
+}
+
+.home {
+   position:absolute;
+   top:80px;
+   right:160px;
+}
+
+.center {
+    text-align:center
+}
+
+.left {
+  text-align: left;
 }

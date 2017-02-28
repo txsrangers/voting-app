@@ -1,6 +1,16 @@
 extends layout
 
 block content
-  h1= title
-  br
-  a(href='/') Return to home
+  if !user
+    p You must sign in to see your polls.
+    a(href='/signin') Sign In
+  else
+    .center
+      h2 #{user.username}'s Polls
+      each poll, i in polls
+        if poll.user_id === user.username
+          p= poll.poll_title
+          br
+          
+        
+      
