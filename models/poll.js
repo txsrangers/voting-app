@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var pollSchema = new Schema( {
   user_id: String,
   poll_title: String,
-  poll_options: Array
+  description: String
+  // Include an array of poll option objects
 }, { timestamps: true } );
 
 var poll = this;
