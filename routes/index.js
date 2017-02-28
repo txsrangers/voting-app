@@ -7,7 +7,15 @@ var passport = require('passport');
 
 //import the models
 var User = require('../models/user')
-var Polls = require('../models/poll')
+var Poll = require('../models/poll') // Keep it singular
+
+// Function to pass for protected routes
+function ensuredAuthenticated(req, res, next) {
+  // If the user is logged in, proceed to the next step in route
+  if (req.isAuthenticated()) return next();
+  // if not, redirect to createnewpoll view
+  res.redirect('/createnewpoll');
+}
 
 /* GET Userlist page. */
 router.get('/userlist', function(req, res, next) {
@@ -38,14 +46,14 @@ router.get('/signup', function(req, res, next) {
 router.post('/signup', Authentication.signup);
 
 router.get('/allpolls', function(req, res, next) {
-  Polls.find({}, function(err, polls) {
+  Poll.find({}, function(err, polls) {
     if (err) return next(err);
     res.render('allpolls', {polls: polls});
   });
 });
 
 router.get('/mypolls', function(req, res, next) {
-	Polls.find({}, function(err, polls) {
+	Poll.find({}, function(err, polls) {
     if (err) return next(err);
     res.render('mypolls', {polls: polls});
   });
@@ -59,6 +67,30 @@ router.get('/createnewpoll', function(req, res, next) {
 	res.render('createnewpoll', { title: 'Create New Poll' });
 });
 
+// To post a new poll to the database. Proctect routed. See line 12 above
+router.post('/createnewpoll', ensuredAuthenticated, function(req, res, next) {
+  // get values from input form and passport
+  var poll_title = req.body.title;
+  var description = req.body.description;
+  var user_id = req.user._id;
+
+  // check for empty string data
+  if (!poll_title.length || !description.length) return res.status(422).send('Fields cannot be blank!');
+
+  // create a new instance of Poll model
+  var poll = new Poll({
+    user_id: user_id,
+    description: description,
+    poll_title: poll_title
+  });
+
+  // save the new instance to db
+  poll.save(function(err) {
+    // hanld possible errors
+    if (err) return next(err);
+    res.render('createnewpoll', { title: 'Create New Poll' });
+  });
+});
 
 router.get('/editpoll', function(req, res, next) {
 	res.render('editpoll', { title: 'Edit Poll' });

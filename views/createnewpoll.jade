@@ -6,11 +6,11 @@ block content
     a(href='/signin') Sign In
   else
     h3= title
-    form(method="POST", action="/signin")
-      p Name of Poll: 
-        input(type="text", name="pollName")
-      p Description: 
-        input(type="text", name="pollDescription")
+    form(method="POST", action="/createnewpoll")
+      p Name of Poll:
+        input(type="text", name="title")
+      p Description:
+        input(type="text", name="description")
       p
         input(type="submit")
       br
