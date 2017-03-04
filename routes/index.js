@@ -12,9 +12,11 @@ var Poll = require('../models/poll') // Keep it singular
 // Function to pass for protected routes
 function ensuredAuthenticated(req, res, next) {
   // If the user is logged in, proceed to the next step in route
-  if (req.isAuthenticated()) return next();
+  if (req.isAuthenticated()) {
+    return next();
+  }
   // if not, redirect to createnewpoll view
-  res.redirect('/createnewpoll');
+  res.render('index', { title: 'Voting App' });
 }
 
 /* GET Userlist page. */
@@ -63,7 +65,7 @@ router.get('/individualpoll', function(req, res, next) {
 	res.render('individualpoll', { title: 'Poll' });
 });
 
-router.get('/createnewpoll', function(req, res, next) {
+router.get('/createnewpoll', ensuredAuthenticated, function(req, res, next) {
 	res.render('createnewpoll', { title: 'Create New Poll' });
 });
 
@@ -88,7 +90,8 @@ router.post('/createnewpoll', ensuredAuthenticated, function(req, res, next) {
   poll.save(function(err) {
     // hanld possible errors
     if (err) return next(err);
-    res.render('createnewpoll', { title: 'Create New Poll' });
+    res.location('/');
+    res.redirect('/');
   });
 });
 
@@ -101,7 +104,6 @@ router.get('/deletepoll', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res, next) {
-  req.session.destroy()
   req.logout();
   res.redirect('/');
 });
